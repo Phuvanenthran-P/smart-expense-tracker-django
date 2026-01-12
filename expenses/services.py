@@ -1,9 +1,12 @@
 from django.db.models import Sum
 from datetime import date
 
-def evaluate_expense(category, amount):
+
+def evaluate_expense(category, amount, user):
     today = date.today()
-    monthly_total = category.expense_set.filter(
+
+    monthly_total = category.expenses.filter(
+        user=user,
         date__year=today.year,
         date__month=today.month
     ).aggregate(total=Sum('amount'))['total'] or 0
